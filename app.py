@@ -5,7 +5,7 @@ from io import BytesIO
 import base64
 
 st.set_page_config(page_title="NEST Forecast App", layout="wide")
-st.title("📈 SEB NEST Forecast App)")
+st.title("📈 SEB NEST Forecast App")
 
 # Upload section
 uploaded_file = st.file_uploader("Upload your 'NEST Forecast Template.csv' file", type=["csv"])
