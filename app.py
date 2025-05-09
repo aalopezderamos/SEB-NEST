@@ -7,10 +7,9 @@ import base64
 st.set_page_config(page_title="NEST Forecast App", layout="wide")
 st.title("📈 SEB NEST Forecast App")
 
-# Upload section
-uploaded_file = st.file_uploader("Upload your 'NEST Forecast Template.csv' file", type=["csv"])
+uploaded_file = st.file_uploader("📤 Upload your 'NEST Forecast Template.csv' file", type=["csv"])
 
-# Define holidays
+# Define holiday ranges
 def get_custom_holidays():
     holiday_week_dates = [
         ('fiesta', pd.date_range('2023-04-20', '2023-04-30')),
@@ -40,23 +39,30 @@ def get_custom_holidays():
 
     return pd.DataFrame(records)
 
-# Accuracy calc
+# Safe accuracy calc
 def safe_accuracy(row):
     if pd.isna(row['y']) or row['y'] == 0:
         return None
     return round(1 - abs((row['y'] - row['yhat']) / row['y']), 3)
 
-# Main logic
 if uploaded_file:
-    with st.spinner("Processing forecast..."):
+    with st.spinner("Processing your forecast..."):
         df = pd.read_csv(uploaded_file)
         df['ds'] = pd.to_datetime(df['ds'])
-        sku_list = df['sku_id'].unique()
-        custom_holidays = get_custom_holidays()
-        detailed_forecasts = []
 
-        for sku in sku_list:
+        custom_holidays = get_custom_holidays()
+        sku_list = df['sku_id'].unique()
+        total = len(sku_list)
+
+        detailed_forecasts = []
+        progress_bar = st.progress(0)
+        status_text = st.empty()
+
+        for idx, sku in enumerate(sku_list, start=1):
             df_sku = df[df['sku_id'] == sku]
+            progress_bar.progress(idx / total)
+            status_text.text(f"Processing SKU {idx} of {total} → {sku}")
+
             if len(df_sku) < 50:
                 continue
 
@@ -86,23 +92,23 @@ if uploaded_file:
 
             except Exception as e:
                 st.warning(f"⚠️ Error processing SKU {sku}: {e}")
+                continue
 
         if detailed_forecasts:
             df_detailed = pd.concat(detailed_forecasts)
 
-            # Display preview
             st.success("✅ Forecasting complete!")
             st.subheader("📊 Forecast Preview")
             st.dataframe(df_detailed.head(20))
 
-            # Export as Excel
+            # Convert to downloadable Excel
             output = BytesIO()
             with pd.ExcelWriter(output, engine='openpyxl') as writer:
                 df_detailed.to_excel(writer, index=False)
             output.seek(0)
 
             b64 = base64.b64encode(output.read()).decode()
-            href = f'<a href="data:application/octet-stream;base64,{b64}" download="NEST_Forecasts_Final.xlsx">📥 Download Excel File</a>'
+            href = f'<a href="data:application/octet-stream;base64,{b64}" download="NEST_Forecasts_Final.xlsx">📥 Download Forecast Excel</a>'
             st.markdown(href, unsafe_allow_html=True)
         else:
-            st.error("❌ No valid forecasts generated. Check your data and try again.")
+            st.error("❌ No forecasts were generated. Check your file format or data.")
