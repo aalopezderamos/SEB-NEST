@@ -7,22 +7,7 @@ import base64
 # Set page settings
 st.set_page_config(page_title="NEST Forecast App", layout="wide")
 
-# 🔵 Set custom background color
-st.markdown(
-    """
-    <style>
-    body {
-        background-color: #13243E;
-    }
-    .stApp {
-        background-color: #13243E;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-
-# 🔵 Logo in top-right corner
+# 🔽 Add logo to top-right corner
 st.markdown(
     """
     <div style='text-align: right'>
@@ -35,10 +20,10 @@ st.markdown(
 # Title
 st.title("📈 SEB NEST Forecast App")
 
-# Upload CSV
+# File upload
 uploaded_file = st.file_uploader("📤 Upload your 'NEST Forecast Template.csv' file", type=["csv"])
 
-# Define holiday ranges
+# Holiday ranges
 def get_custom_holidays():
     holiday_week_dates = [
         ('fiesta', pd.date_range('2023-04-20', '2023-04-30')),
@@ -68,13 +53,13 @@ def get_custom_holidays():
 
     return pd.DataFrame(records)
 
-# Accuracy function
+# Safe accuracy calc
 def safe_accuracy(row):
     if pd.isna(row['y']) or row['y'] == 0:
         return None
     return round(1 - abs((row['y'] - row['yhat']) / row['y']), 3)
 
-# Main forecasting logic
+# Main logic
 if uploaded_file:
     with st.spinner("Processing your forecast..."):
         df = pd.read_csv(uploaded_file)
@@ -131,7 +116,7 @@ if uploaded_file:
             st.subheader("📊 Forecast Preview")
             st.dataframe(df_detailed.head(20))
 
-            # Export as Excel
+            # Convert to downloadable Excel
             output = BytesIO()
             with pd.ExcelWriter(output, engine='openpyxl') as writer:
                 df_detailed.to_excel(writer, index=False)
