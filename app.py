@@ -11,7 +11,7 @@ st.set_page_config(page_title="NEST Forecast App", layout="wide")
 st.markdown(
     """
     <div style='text-align: right'>
-        <img src='https://d1ynl4hb5mx7r8.cloudfront.net/wp-content/uploads/2020/02/19180100/logo.png' width='80'>
+        <img src='https://d1ynl4hb5mx7r8.cloudfront.net/wp-content/uploads/2020/02/19180100/logo.png' width='280'>
     </div>
     """,
     unsafe_allow_html=True
