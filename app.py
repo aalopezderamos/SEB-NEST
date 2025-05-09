@@ -4,12 +4,26 @@ from prophet import Prophet
 from io import BytesIO
 import base64
 
+# Set page settings
 st.set_page_config(page_title="NEST Forecast App", layout="wide")
+
+# 🔽 Add logo to top-right corner
+st.markdown(
+    """
+    <div style='text-align: right'>
+        <img src='https://d1ynl4hb5mx7r8.cloudfront.net/wp-content/uploads/2020/02/19180100/logo.png' width='80'>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
+# Title
 st.title("📈 SEB NEST Forecast App")
 
+# File upload
 uploaded_file = st.file_uploader("📤 Upload your 'NEST Forecast Template.csv' file", type=["csv"])
 
-# Define holiday ranges
+# Holiday ranges
 def get_custom_holidays():
     holiday_week_dates = [
         ('fiesta', pd.date_range('2023-04-20', '2023-04-30')),
@@ -45,6 +59,7 @@ def safe_accuracy(row):
         return None
     return round(1 - abs((row['y'] - row['yhat']) / row['y']), 3)
 
+# Main logic
 if uploaded_file:
     with st.spinner("Processing your forecast..."):
         df = pd.read_csv(uploaded_file)
