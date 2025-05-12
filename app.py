@@ -91,7 +91,7 @@ if uploaded_file:
 
             # Centered GIF
             gif_placeholder.markdown(
-    f"<div style='text-align:center'><img src='{gif_url}' width='250'></div>",
+    f"<div style='text-align:center'><img src='{gif_url}' width='350'></div>",
     unsafe_allow_html=True
 )
 
