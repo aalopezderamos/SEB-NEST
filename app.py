@@ -7,7 +7,7 @@ import base64
 # Set page settings
 st.set_page_config(page_title="NEST Forecast App", layout="wide")
 
-# 🔽 Add logo to top-right corner
+# Logo in top-right corner
 st.markdown(
     """
     <div style='text-align: right'>
@@ -17,13 +17,13 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# Title
+# App title
 st.title("📈 SEB NEST Forecast App")
 
-# File upload
+# File uploader
 uploaded_file = st.file_uploader("📤 Upload your 'NEST Forecast Template.csv' file", type=["csv"])
 
-# Holiday ranges
+# Define holiday events
 def get_custom_holidays():
     holiday_week_dates = [
         ('fiesta', pd.date_range('2023-04-20', '2023-04-30')),
@@ -50,10 +50,9 @@ def get_custom_holidays():
                 'lower_window': -3,
                 'upper_window': 3
             })
-
     return pd.DataFrame(records)
 
-# Safe accuracy calc
+# Accuracy calc
 def safe_accuracy(row):
     if pd.isna(row['y']) or row['y'] == 0:
         return None
@@ -80,20 +79,21 @@ if uploaded_file:
             progress_bar.progress(progress)
             status_text.text(f"Processing SKU {idx} of {total} → {sku}")
 
-            # Show GIFs based on progress
+            # Select GIF based on progress
             if progress <= 0.25:
-                gif_url = "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExYW43bWJoaHpmY2p1bmNneWM0ZjRwcWdkYWJyN3lhd21wMXVveWd1MSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/xT5LMJPvVaukDXS4bC/giphy.gif"  # low progress
+                gif_url = "https://media.giphy.com/media/3o7abldj0b3rxrZUxW/giphy.gif"
             elif progress <= 0.5:
-                gif_url = "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExOXlpaXBreTVuanJ6MTl6Mjk5YzNlZXN2NmhoczdsMWdmeWJuZW9hNyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/QPQ3xlJhqR1BXl89RG/giphy.gif"  # medium progress
+                gif_url = "https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif"
             elif progress <= 0.75:
-                gif_url = "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExOGhrbHZuNXpiZWJ1cm9sYTJmNDNucnBhZXB0dXR4amNpdXV1YnJoaCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/FoH28ucxZFJZu/giphy.gif"  # higher progress
+                gif_url = "https://media.giphy.com/media/xT5LMtTZxP5L6kYRWk/giphy.gif"
             else:
-                gif_url = "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExNTVsNmhmOWozczJ3a3I1eW50cXNyZDhmZmVldW9ranNubW52dTg2OCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l2Je9zHYveK012EVi/giphy.gif"  # final stretch
+                gif_url = "https://media.giphy.com/media/26gJA0q6pF1YF2f3q/giphy.gif"
 
-            gif_placeholder.markdown(
-                f"<div style='text-align: center'><img src='{gif_url}' width='300'></div>",
-                unsafe_allow_html=True
-            )
+            # Centered GIF
+            with st.container():
+                col1, col2, col3 = st.columns([1, 2, 1])
+                with col2:
+                    gif_placeholder.image(gif_url, use_column_width=True)
 
             if len(df_sku) < 50:
                 continue
@@ -133,7 +133,7 @@ if uploaded_file:
             st.subheader("📊 Forecast Preview")
             st.dataframe(df_detailed.head(20))
 
-            # Convert to downloadable Excel
+            # Excel download
             output = BytesIO()
             with pd.ExcelWriter(output, engine='openpyxl') as writer:
                 df_detailed.to_excel(writer, index=False)
