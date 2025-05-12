@@ -72,11 +72,28 @@ if uploaded_file:
         detailed_forecasts = []
         progress_bar = st.progress(0)
         status_text = st.empty()
+        gif_placeholder = st.empty()
 
         for idx, sku in enumerate(sku_list, start=1):
             df_sku = df[df['sku_id'] == sku]
-            progress_bar.progress(idx / total)
+            progress = idx / total
+            progress_bar.progress(progress)
             status_text.text(f"Processing SKU {idx} of {total} → {sku}")
+
+            # Show GIFs based on progress
+            if progress <= 0.25:
+                gif_url = "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExYW43bWJoaHpmY2p1bmNneWM0ZjRwcWdkYWJyN3lhd21wMXVveWd1MSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/xT5LMJPvVaukDXS4bC/giphy.gif"  # low progress
+            elif progress <= 0.5:
+                gif_url = "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExOXlpaXBreTVuanJ6MTl6Mjk5YzNlZXN2NmhoczdsMWdmeWJuZW9hNyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/QPQ3xlJhqR1BXl89RG/giphy.gif"  # medium progress
+            elif progress <= 0.75:
+                gif_url = "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExOGhrbHZuNXpiZWJ1cm9sYTJmNDNucnBhZXB0dXR4amNpdXV1YnJoaCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/FoH28ucxZFJZu/giphy.gif"  # higher progress
+            else:
+                gif_url = "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExNTVsNmhmOWozczJ3a3I1eW50cXNyZDhmZmVldW9ranNubW52dTg2OCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l2Je9zHYveK012EVi/giphy.gif"  # final stretch
+
+            gif_placeholder.markdown(
+                f"<div style='text-align: center'><img src='{gif_url}' width='300'></div>",
+                unsafe_allow_html=True
+            )
 
             if len(df_sku) < 50:
                 continue
