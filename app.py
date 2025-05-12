@@ -90,10 +90,10 @@ if uploaded_file:
                 gif_url = "https://media.giphy.com/media/26gJA0q6pF1YF2f3q/giphy.gif"
 
             # Centered GIF
-            with st.container():
-                col1, col2, col3 = st.columns([1, 2, 1])
-                with col2:
-                    gif_placeholder.image(gif_url, use_column_width=True)
+            gif_placeholder.markdown(
+    f"<div style='text-align:center'><img src='{gif_url}' width='250'></div>",
+    unsafe_allow_html=True
+)
 
             if len(df_sku) < 50:
                 continue
