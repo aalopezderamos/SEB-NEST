@@ -81,13 +81,13 @@ if uploaded_file:
 
             # Select GIF based on progress
             if progress <= 0.25:
-                gif_url = "https://media.giphy.com/media/3o7abldj0b3rxrZUxW/giphy.gif"
+                gif_url = "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExeWsyYnZzdTF3bjNzZ3JjcjVhcHhoemQ5N3RhamJ1Y21ycjIzODNzMSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/npFk4EInIOVEE8pLvw/giphy.gif"
             elif progress <= 0.5:
-                gif_url = "https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif"
+                gif_url = "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExbTcwb3RyNzI2MWs0YnV1cmZzeXF2dGFsM3JiYXdieTduaGVqb3EzaCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/26DMVjNnk3fYwkJWw/giphy.gif"
             elif progress <= 0.75:
-                gif_url = "https://media.giphy.com/media/xT5LMtTZxP5L6kYRWk/giphy.gif"
+                gif_url = "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZDlwZjFzMzdmaHplaGZkb25tY3Yyc2oxMjllNzQxMHB4dGlheXRrdCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/k5tH659w1XI8fRZTEi/giphy.gif"
             else:
-                gif_url = "https://media.giphy.com/media/26gJA0q6pF1YF2f3q/giphy.gif"
+                gif_url = "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExejFpczVzMTJoZDRmeXU4aXp4aXZmOWd3b2ZxanduenU1anFpNzUyYiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Djgj1skSXcUtAWifnG/giphy.gif"
 
             # Centered GIF
             gif_placeholder.markdown(
