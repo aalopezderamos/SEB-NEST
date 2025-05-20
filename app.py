@@ -109,7 +109,7 @@ if uploaded_file:
 
                 last_date = df_sku['ds'].max()
                 next_saturday = last_date + pd.DateOffset(days=(5 - last_date.weekday() + 7) % 7 + 1)
-                future_saturdays = pd.date_range(start=next_saturday, periods=12, freq='W-SAT')
+                future_saturdays = pd.date_range(start=next_saturday, periods=13, freq='W-SAT')
                 future = pd.concat([df_sku[['ds']], pd.DataFrame({'ds': future_saturdays})], ignore_index=True)
 
                 forecast = m.predict(future)
